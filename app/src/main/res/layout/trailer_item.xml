@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        style="@style/Separator"
+        android:layout_height="@dimen/separator_line_thin"
+        app:layout_constraintBottom_toTopOf="@id/iv_video_icon" />
+
+    <ImageView
+        android:id="@+id/iv_video_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/default_image_desc"
+        android:padding="@dimen/indent_two_steps"
+        android:src="@android:drawable/ic_media_play" />
+
+    <TextView
+        android:id="@+id/tv_trailer_label"
+        style="@style/TextReviewAuthor"
+        android:layout_marginStart="@dimen/indent_two_steps"
+        app:layout_constraintBottom_toBottomOf="@id/iv_video_icon"
+        app:layout_constraintLeft_toRightOf="@id/iv_video_icon"
+        app:layout_constraintTop_toTopOf="@id/iv_video_icon" />
+
+</android.support.constraint.ConstraintLayout>

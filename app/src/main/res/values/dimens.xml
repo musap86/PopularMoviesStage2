@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spinner_dropdown_item_height">40dp</dimen>
+    <dimen name="title_text_size">32sp</dimen>
+    <dimen name="headline_text_size">26sp</dimen>
+    <dimen name="label_text_size">22sp</dimen>
+    <dimen name="review_author_text_size">20sp</dimen>
+    <dimen name="content_text_size">18sp</dimen>
+    <dimen name="indent_none">0dp</dimen>
+    <dimen name="indent_one_step">8dp</dimen>
+    <dimen name="indent_two_steps">16dp</dimen>
+    <dimen name="button_width">90dp</dimen>
+    <dimen name="button_height">70dp</dimen>
+    <dimen name="detail_title_space_height">150dp</dimen>
+    <dimen name="detail_poster_width">150dp</dimen>
+    <dimen name="separator_line_thin">1dp</dimen>
+    <dimen name="separator_line_thick">3dp</dimen>
+</resources>

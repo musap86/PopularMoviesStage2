@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="movie_details">Movie Details</string>
+    <string name="share">SHARE</string>
+    <string name="share_chooser_title">Share movie trailer link</string>
+    <string name="settings">SETTINGS</string>
+    <string name="reviews">Reviews</string>
+    <string name="no_reviews">No Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="no_trailers">No Trailers</string>
+    <string name="default_image_desc">Image</string>
+    <string name="minutes_short">min.</string>
+    <string name="spinner_title">Sort Movies</string>
+    <string name="most_popular">MOST POPULAR</string>
+    <string name="top_rated">HIGHEST RATED</string>
+    <string name="favorites">FAVORITES</string>
+    <string name="no_internet_connection">NO INTERNET CONNECTION</string>
+    <string name="mark_favorite">MARK AS FAVORITE</string>
+    <string name="remove_favorite">REMOVE FROM FAVORITES</string>
+    <string name="full_vote_point">/10</string>
+
+    <string name="pref_quality_label">Image Quality</string>
+    <string name="pref_quality_label_1">Very low</string>
+    <string name="pref_quality_label_2">Low</string>
+    <string name="pref_quality_label_3">Medium</string>
+    <string name="pref_quality_label_4">High</string>
+    <string name="pref_quality_label_5">Very high</string>
+    <string name="pref_quality_key" translatable="false">quality</string>
+    <string name="pref_quality_value_1" translatable="false">1</string>
+    <string name="pref_quality_value_2" translatable="false">2</string>
+    <string name="pref_quality_value_3" translatable="false">3</string>
+    <string name="pref_quality_value_4" translatable="false">4</string>
+    <string name="pref_quality_value_5" translatable="false">5</string>
+</resources>

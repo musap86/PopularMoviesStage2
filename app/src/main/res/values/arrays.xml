@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_quality_option_labels">
+        <item>@string/pref_quality_label_1</item>
+        <item>@string/pref_quality_label_2</item>
+        <item>@string/pref_quality_label_3</item>
+        <item>@string/pref_quality_label_4</item>
+        <item>@string/pref_quality_label_5</item>
+    </array>
+
+    <array name="sort_style_array">
+        <item>@string/most_popular</item>
+        <item>@string/top_rated</item>
+        <item>@string/favorites</item>
+    </array>
+
+    <array name="pref_quality_option_values">
+        <item>@string/pref_quality_value_1</item>
+        <item>@string/pref_quality_value_2</item>
+        <item>@string/pref_quality_value_3</item>
+        <item>@string/pref_quality_value_4</item>
+        <item>@string/pref_quality_value_5</item>
+    </array>
+</resources>

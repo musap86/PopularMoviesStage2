@@ -1,0 +1,48 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+    </style>
+
+    <style name="MainActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackgrounds</item>
+    </style>
+
+    <style name="Separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/separator_line_thick</item>
+        <item name="android:layout_margin">@dimen/indent_one_step</item>
+        <item name="android:background">@color/colorSeparator</item>
+    </style>
+
+    <style name="TextContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">@dimen/indent_one_step</item>
+        <item name="android:layout_marginTop">@dimen/indent_two_steps</item>
+    </style>
+
+    <style name="TextLabels" parent="TextContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/label_text_size</item>
+        <item name="android:layout_marginTop">@dimen/indent_one_step</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextReviewAuthor" parent="TextLabels">
+        <item name="android:textSize">@dimen/review_author_text_size</item>
+        <item name="android:layout_marginStart">@dimen/indent_two_steps</item>
+        <item name="android:layout_marginBottom">@dimen/indent_none</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextHeadlines" parent="TextLabels">
+        <item name="android:textSize">@dimen/headline_text_size</item>
+    </style>
+
+</resources>
