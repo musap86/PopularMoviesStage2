@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#2b2b2b</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#86e4db</color>
     <color name="colorWindowBackgrounds">#000000</color>
     <color name="colorSpinnerBackground">#ffffff</color>
-    <color name="colorTitleText">#ffffff</color>
-    <color name="colorSeparator">#959999</color>
-    <color name="colorBackdropTint">#73004150</color>
-    <color name="colorButtonMarkFavorite">#0dd4e2</color>
-    <color name="colorButtonRemoveFavorite">#de120b</color>
+    <color name="colorTexts">#ffffff</color>
+    <color name="colorSeparator">#7381d1</color>
+    <color name="colorBackdropTint">#7301404e</color>
+    <color name="colorButtonMarkFavorite">#00c8ff</color>
+    <color name="colorButtonRemoveFavorite">#98aaaf</color>
 </resources>

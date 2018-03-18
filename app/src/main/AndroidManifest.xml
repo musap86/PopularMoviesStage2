@@ -15,7 +15,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/MainActivityTheme">
+            android:theme="@style/BlackTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +25,8 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/movie_details"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/BlackTheme" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings"

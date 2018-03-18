@@ -31,7 +31,7 @@
                 style="@style/TextHeadlines"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/indent_two_steps"
-                android:textColor="@color/colorTitleText"
+                android:textColor="@color/colorTexts"
                 android:textSize="@dimen/title_text_size" />
         </FrameLayout>
 
@@ -89,11 +89,6 @@
             style="@style/TextContent"
             app:layout_constraintTop_toBottomOf="@+id/iv_detail_movie_poster" />
 
-        <FrameLayout
-            android:id="@+id/line_separator"
-            style="@style/Separator"
-            app:layout_constraintTop_toBottomOf="@+id/tv_plot_synopsis" />
-
         <TextView
             android:id="@+id/tv_trailers_header"
             style="@style/TextHeadlines"
@@ -101,7 +96,7 @@
             android:layout_marginTop="@dimen/indent_two_steps"
             android:padding="@dimen/indent_one_step"
             android:text="@string/trailers"
-            app:layout_constraintTop_toBottomOf="@+id/line_separator" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_plot_synopsis" />
 
         <TextView
             android:id="@+id/tv_no_trailers"
@@ -110,7 +105,7 @@
             android:layout_marginTop="@dimen/indent_two_steps"
             android:padding="@dimen/indent_one_step"
             android:text="@string/no_trailers"
-            app:layout_constraintTop_toBottomOf="@+id/line_separator" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_plot_synopsis" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailers"
@@ -119,11 +114,6 @@
             android:layout_margin="@dimen/indent_one_step"
             app:layout_constraintTop_toBottomOf="@+id/tv_trailers_header" />
 
-        <FrameLayout
-            android:id="@+id/line_separator_reviews"
-            style="@style/Separator"
-            app:layout_constraintTop_toBottomOf="@+id/rv_trailers" />
-
         <TextView
             android:id="@+id/tv_reviews_header"
             style="@style/TextHeadlines"
@@ -131,7 +121,7 @@
             android:layout_marginTop="@dimen/indent_two_steps"
             android:padding="@dimen/indent_one_step"
             android:text="@string/reviews"
-            app:layout_constraintTop_toBottomOf="@+id/line_separator_reviews" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_trailers" />
 
         <TextView
             android:id="@+id/tv_no_reviews"

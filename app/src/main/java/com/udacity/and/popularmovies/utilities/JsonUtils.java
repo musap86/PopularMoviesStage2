@@ -57,9 +57,8 @@ public class JsonUtils {
     public static void extractReviewsFromJson(String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
-            int totalResults = jsonObject.optInt(JSON_VAR_TOTAL_RESULTS);
-            String[][] reviewsArray = new String[totalResults][2];
             JSONArray results = jsonObject.getJSONArray(JSON_VAR_RESULTS);
+            String[][] reviewsArray = new String[results.length()][2];
             for (int i = 0; i < results.length(); i++) {
                 JSONObject result = results.optJSONObject(i);
                 reviewsArray[i][0] = result.optString(JSON_VAR_AUTHOR);

@@ -169,12 +169,14 @@ public class DetailsActivity extends AppCompatActivity
         switch (id) {
             case R.id.menu_share:
                 String key = MovieDetails.getTrailerSource(0);
+                if (key == null || key.length() == 0)
+                    return super.onOptionsItemSelected(item);
                 Uri videoUri = Uri.parse(NetworkUtils.BASE_YOUTUBE_URL + key);
                 ShareCompat.IntentBuilder.from(this)
                         .setChooserTitle(R.string.share_chooser_title)
-                        .setType("text/html")
+                        .setType("text/plain")
                         .setSubject(mMovieDetails.get(JsonUtils.JSON_VAR_TITLE))
-                        .setHtmlText(videoUri.toString())
+                        .setText(videoUri.toString())
                         .startChooser();
                 return true;
         }

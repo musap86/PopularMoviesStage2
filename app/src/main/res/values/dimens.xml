@@ -11,8 +11,10 @@
     <dimen name="indent_two_steps">16dp</dimen>
     <dimen name="button_width">90dp</dimen>
     <dimen name="button_height">70dp</dimen>
-    <dimen name="detail_title_space_height">150dp</dimen>
+    <dimen name="detail_title_space_height">200dp</dimen>
     <dimen name="detail_poster_width">150dp</dimen>
     <dimen name="separator_line_thin">1dp</dimen>
-    <dimen name="separator_line_thick">3dp</dimen>
+    <dimen name="video_icon_height">90dp</dimen>
+    <dimen name="video_icon_width">160dp</dimen>
+    <dimen name="video_list_item_height">125dp</dimen>
 </resources>

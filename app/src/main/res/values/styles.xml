@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,13 +8,13 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
-    <style name="MainActivityTheme" parent="AppTheme">
+    <style name="BlackTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/colorWindowBackgrounds</item>
     </style>
 
     <style name="Separator">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/separator_line_thick</item>
+        <item name="android:layout_height">@dimen/separator_line_thin</item>
         <item name="android:layout_margin">@dimen/indent_one_step</item>
         <item name="android:background">@color/colorSeparator</item>
     </style>
@@ -21,6 +22,7 @@
     <style name="TextContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorTexts</item>
         <item name="android:textSize">@dimen/content_text_size</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_margin">@dimen/indent_one_step</item>
@@ -44,5 +46,4 @@
     <style name="TextHeadlines" parent="TextLabels">
         <item name="android:textSize">@dimen/headline_text_size</item>
     </style>
-
 </resources>
