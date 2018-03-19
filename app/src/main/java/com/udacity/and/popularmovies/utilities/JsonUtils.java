@@ -20,7 +20,7 @@ public class JsonUtils {
     public static final String JSON_VAR_VOTE_AVG = "vote_average";
     public static final String JSON_VAR_POSTER = "poster_path";
     public static final String JSON_VAR_ID = "id";
-    private static final String JSON_VAR_TOTAL_RESULTS = "total_results";
+    private static final String JSON_VAR_PAGE = "page";
     private static final String JSON_VAR_PAGES = "total_pages";
     private static final String JSON_VAR_RESULTS = "results";
     private static final String JSON_VAR_AUTHOR = "author";
@@ -36,9 +36,8 @@ public class JsonUtils {
     public static void extractMovieDataFromJson(String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
-            int sTotalResults = jsonObject.optInt(JSON_VAR_TOTAL_RESULTS);
-            int sTotalPages = jsonObject.optInt(JSON_VAR_PAGES);
-            Log.v("total results - pages", String.valueOf(sTotalResults) + " - " + String.valueOf(sTotalPages));
+            MovieDetails.setPageCount(jsonObject.optInt(JSON_VAR_PAGES));
+            MovieDetails.setCurrentPage(jsonObject.optInt(JSON_VAR_PAGE));
             JSONArray results = jsonObject.getJSONArray(JSON_VAR_RESULTS);
             int[] ids = new int[results.length()];
             String[] posterPaths = new String[results.length()];

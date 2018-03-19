@@ -13,6 +13,8 @@ public class MovieDetails {
     private static String[] sVideoNames;
     private static String[] sVideoKeys;
     private static String[][] sReviewsArray;
+    private static int sPageCount;
+    private static int sCurrentPage;
 
     public static void setIds(int[] ids) {
         sIds = ids;
@@ -61,7 +63,23 @@ public class MovieDetails {
         return sReviewsArray[index][1];
     }
 
-    public static int getMoviesCount() {
+    public static int getPageCount() {
+        return sPageCount;
+    }
+
+    public static void setPageCount(int movieCount) {
+        sPageCount = movieCount;
+    }
+
+    public static int getCurrentPage() {
+        return sCurrentPage;
+    }
+
+    public static void setCurrentPage(int currentPage) {
+        MovieDetails.sCurrentPage = currentPage;
+    }
+
+    public static int getMoviesCountInPage() {
         if (sIds == null)
             return 0;
         else

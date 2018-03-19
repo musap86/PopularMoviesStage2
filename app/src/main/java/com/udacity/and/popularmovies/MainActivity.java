@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.udacity.and.popularmovies.adapters.PostersAdapter;
 import com.udacity.and.popularmovies.data.FavoritesContract;
+import com.udacity.and.popularmovies.data.MovieDetails;
 import com.udacity.and.popularmovies.data.UserPrefs;
 import com.udacity.and.popularmovies.utilities.JsonUtils;
 import com.udacity.and.popularmovies.utilities.NetworkUtils;
@@ -43,15 +44,26 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.OnSharedPreferenceChangeListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String POSTERS_STATE_KEY = "poster_state";
-    private static final int MOVIE_DATA_LOADER = 21;
+    private static final int MOVIE_DATA_LOADER = 20;
+    private static final int EXTENTION_LOADER = 21;
     private static final int FAVORITES_LOADER = 22;
     private static final String TAG_MOVIE_ID = "movie_id";
+    private static final String TAG_CURRENT_PAGE = "current_page";
+    private static final int DIRECTION_UP = -1;
+    private static final int DIRECTION_DOWN = 1;
+    private static final int FIRST_PAGE = 1;
     @BindView(R.id.rv_movie_posters)
     RecyclerView mMoviePosters;
     private PostersAdapter mAdapter;
     private int mMaxPosterWidth;
     private GridLayoutManager mLayoutManager;
     private Parcelable mMoviePostersState;
+    private int mCurrentPage;
+    private int mExtendingPage;
+    private int mLastPage;
+    private boolean isAddingToTail;
+    private int mFirstVisibleItemPos;
+    private int mLastVisibleItemPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +73,44 @@ public class MainActivity extends AppCompatActivity
         NetworkUtils.PARAM_API_KEY = getString(R.string.the_movie_database_api_key);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        int imageQuality = Integer.parseInt(
-                sharedPreferences.getString(
+        UserPrefs.setImageQuality(
+                Integer.parseInt(sharedPreferences.getString(
                         getString(R.string.pref_quality_key),
-                        getString(R.string.pref_quality_value_3)));
-        UserPrefs.setImageQuality(imageQuality);
+                        getString(R.string.pref_quality_value_2))));
         mLayoutManager = new GridLayoutManager(this, optimizePosterWidth());
         mMoviePosters.setLayoutManager(mLayoutManager);
         mMoviePosters.setHasFixedSize(true);
         mAdapter = new PostersAdapter(this, mMaxPosterWidth);
         mMoviePosters.setAdapter(mAdapter);
+        mMoviePosters.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (UserPrefs.getSortOrder() == NetworkUtils.SortOrder.FAVORITES
+                        || !NetworkUtils.isOnline(MainActivity.this)) {
+                    return;
+                }
+                if (!recyclerView.canScrollVertically(DIRECTION_DOWN)) {
+                    if (mCurrentPage < mLastPage) {
+                        mExtendingPage = mCurrentPage + 1;
+                        isAddingToTail = true;
+                        mFirstVisibleItemPos = mLayoutManager.findFirstVisibleItemPosition();
+                        getSupportLoaderManager()
+                                .restartLoader(EXTENTION_LOADER, null, MainActivity.this);
+
+                    }
+                } else if (!recyclerView.canScrollVertically(DIRECTION_UP)) {
+                    if (mCurrentPage > FIRST_PAGE) {
+                        mExtendingPage = mCurrentPage - 1;
+                        isAddingToTail = false;
+                        mLastVisibleItemPos = mLayoutManager.findLastVisibleItemPosition();
+                        getSupportLoaderManager()
+                                .restartLoader(EXTENTION_LOADER, null, MainActivity.this);
+
+                    }
+                }
+            }
+        });
         loadMoviesData();
     }
 
@@ -79,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         mMoviePostersState = mLayoutManager.onSaveInstanceState();
         outState.putParcelable(POSTERS_STATE_KEY, mMoviePostersState);
+        outState.putInt(TAG_CURRENT_PAGE, mCurrentPage);
     }
 
     @Override
@@ -86,6 +127,7 @@ public class MainActivity extends AppCompatActivity
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             mMoviePostersState = savedInstanceState.getParcelable(POSTERS_STATE_KEY);
+            mCurrentPage = savedInstanceState.getInt(TAG_CURRENT_PAGE);
         }
     }
 
@@ -223,9 +265,18 @@ public class MainActivity extends AppCompatActivity
                             return null;
                         }
                     case MOVIE_DATA_LOADER:
-                        URL movieRequestUrl = NetworkUtils.generateURL(UserPrefs.getSortOrder());
+                        URL movieRequestUrl = NetworkUtils.generateURL(UserPrefs.getSortOrder(), mCurrentPage);
                         try {
                             return NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+                        } catch (IOException e) {
+                            Log.e(TAG, "Failed to asynchronously load data.");
+                            e.printStackTrace();
+                            return null;
+                        }
+                    case EXTENTION_LOADER:
+                        URL movieExtendRequestUrl = NetworkUtils.generateURL(UserPrefs.getSortOrder(), mExtendingPage);
+                        try {
+                            return NetworkUtils.getResponseFromHttpUrl(movieExtendRequestUrl);
                         } catch (IOException e) {
                             Log.e(TAG, "Failed to asynchronously load data.");
                             e.printStackTrace();
@@ -242,11 +293,20 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(@NonNull Loader<Object> loader, Object data) {
         if (data != null) {
             if (data instanceof String) {
-                JsonUtils.extractMovieDataFromJson((String) data);
+                if (loader.getId() == EXTENTION_LOADER) {
+                    PopulateMoviePostersListExtension((String) data);
+                } else {
+                    JsonUtils.extractMovieDataFromJson((String) data);
+                }
+                mLastPage = MovieDetails.getPageCount();
+                mCurrentPage = MovieDetails.getCurrentPage();
+                Log.v("onLoadFinished", mCurrentPage + "/" + mLastPage);
+                Toast.makeText(this, mCurrentPage + "/" + mLastPage, Toast.LENGTH_SHORT).show();
                 mAdapter.setCursor(null);
             } else if (data instanceof Cursor) {
                 mAdapter.setCursor((Cursor) data);
             }
+
             if (mMoviePostersState != null) {
                 mLayoutManager.onRestoreInstanceState(mMoviePostersState);
             }
@@ -255,5 +315,48 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(@NonNull Loader<Object> loader) {
+    }
+
+    private void PopulateMoviePostersListExtension(String data) {
+        int[] extendedIds = new int[40];
+        String[] extendedPosters = new String[40];
+        if (isAddingToTail) {
+            if (MovieDetails.getMoviesCountInPage() <= 20) {
+                for (int i = 0; i < 20; i++) {
+                    extendedIds[i] = MovieDetails.getId(i);
+                    extendedPosters[i] = MovieDetails.getImagePath(i);
+                }
+                JsonUtils.extractMovieDataFromJson(data);
+                for (int i = 20; i < 40; i++) {
+                    extendedIds[i] = MovieDetails.getId(i - 20);
+                    extendedPosters[i] = MovieDetails.getImagePath(i - 20);
+                }
+            } else {
+                for (int i = 0; i < 20; i++) {
+                    extendedIds[i] = MovieDetails.getId(i + 20);
+                    extendedPosters[i] = MovieDetails.getImagePath(i + 20);
+                }
+                JsonUtils.extractMovieDataFromJson(data);
+                for (int i = 20; i < 40; i++) {
+                    extendedIds[i] = MovieDetails.getId(i - 20);
+                    extendedPosters[i] = MovieDetails.getImagePath(i - 20);
+                }
+                mMoviePosters.scrollToPosition(mFirstVisibleItemPos - 20);
+            }
+        } else {
+            for (int i = 20; i < 40; i++) {
+                extendedIds[i] = MovieDetails.getId(i - 20);
+                extendedPosters[i] = MovieDetails.getImagePath(i - 20);
+            }
+            JsonUtils.extractMovieDataFromJson(data);
+            for (int i = 0; i < 20; i++) {
+                extendedIds[i] = MovieDetails.getId(i);
+                extendedPosters[i] = MovieDetails.getImagePath(i);
+            }
+            mMoviePosters.scrollToPosition(mLastVisibleItemPos + 20);
+        }
+        MovieDetails.setIds(extendedIds);
+        MovieDetails.setPosterPaths(extendedPosters);
+        mAdapter.notifyDataSetChanged();
     }
 }

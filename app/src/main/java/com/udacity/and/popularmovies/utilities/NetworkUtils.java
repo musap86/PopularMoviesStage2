@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class NetworkUtils {
     private static final String TRAILERS_TAG = "videos";
     private static final String REVIEWS_TAG = "reviews";
     private static final String QUERY_API_KEY = "api_key";
+    private static final String QUERY_PAGE = "page";
     public static String PARAM_API_KEY;
 
     /**
@@ -37,8 +39,9 @@ public class NetworkUtils {
      * @param sortingType The type of sorting that will be queried for.
      * @return The URL to query from the movieDB server.
      */
-    public static URL generateURL(SortOrder sortingType) {
+    public static URL generateURL(@NonNull SortOrder sortingType, @NonNull int page) {
         String path = "";
+        page = (page < 1) ? 1 : page;
         switch (sortingType) {
             case MOST_POPULAR:
                 path = PATH_POPULAR;
@@ -50,6 +53,7 @@ public class NetworkUtils {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL).buildUpon()
                 .appendEncodedPath(path)
                 .appendQueryParameter(QUERY_API_KEY, PARAM_API_KEY)
+                .appendQueryParameter(QUERY_PAGE, String.valueOf(page))
                 .build();
         URL url = null;
         try {

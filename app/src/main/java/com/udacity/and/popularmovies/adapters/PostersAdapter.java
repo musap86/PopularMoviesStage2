@@ -55,7 +55,7 @@ public class PostersAdapter extends RecyclerView.Adapter<PostersAdapter.MoviePos
         if (mCursor != null)
             return mCursor.getCount();
         else
-            return MovieDetails.getMoviesCount();
+            return MovieDetails.getMoviesCountInPage();
     }
 
     /**
