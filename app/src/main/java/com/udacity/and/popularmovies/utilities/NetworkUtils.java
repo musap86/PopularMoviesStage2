@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -16,9 +15,8 @@ import java.util.Scanner;
 
 /**
  * Utility class for retrieving data from the server.
- * It's important to provide the api key below. To fetch popular movies,
- * you will use the API from the movie db. If you don’t already have an account,
- * you will need to create one in order to request an API Key.
+ * It's important to provide a string resource file (api_key.xml) which contains the api key
+ * for The Movie Database API.
  */
 public class NetworkUtils {
     public static final String BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v=";
@@ -31,6 +29,7 @@ public class NetworkUtils {
     private static final String REVIEWS_TAG = "reviews";
     private static final String QUERY_API_KEY = "api_key";
     private static final String QUERY_PAGE = "page";
+    private static final int START_PAGE = 1;
     public static String PARAM_API_KEY;
 
     /**
@@ -39,9 +38,9 @@ public class NetworkUtils {
      * @param sortingType The type of sorting that will be queried for.
      * @return The URL to query from the movieDB server.
      */
-    public static URL generateURL(@NonNull SortOrder sortingType, @NonNull int page) {
+    public static URL generateURL(SortOrder sortingType, int page) {
         String path = "";
-        page = (page < 1) ? 1 : page;
+        page = (page < START_PAGE) ? START_PAGE : page;
         switch (sortingType) {
             case MOST_POPULAR:
                 path = PATH_POPULAR;
@@ -167,7 +166,6 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
-            Log.v(CLASS_TAG, "getResponseFromHttpUrl(" + url + ")");
             InputStream in = urlConnection.getInputStream();
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");

@@ -1,5 +1,6 @@
 package com.udacity.and.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,7 +28,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.udacity.and.popularmovies.adapters.ReviewsAdapter;
 import com.udacity.and.popularmovies.adapters.TrailersAdapter;
-import com.udacity.and.popularmovies.data.FavoritesContract;
+import com.udacity.and.popularmovies.data.DataContract;
 import com.udacity.and.popularmovies.data.MovieDetails;
 import com.udacity.and.popularmovies.data.UserPrefs;
 import com.udacity.and.popularmovies.utilities.DateUtils;
@@ -41,14 +42,18 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsActivity extends AppCompatActivity
-        implements IListItemClickListener, LoaderManager.LoaderCallbacks<Object> {
-    private static final String TAG = DetailsActivity.class.getSimpleName();
-    private static final int FAVORITES_LOADER = 22;
-    private static final int DETAIL_LOADER = 23;
-    private static final int TRAILER_LOADER = 24;
-    private static final int REVIEW_LOADER = 25;
-    private static final String MOVIE_ID_TAG = "movie_id";
+@SuppressWarnings("WeakerAccess")
+public class DetailsActivity
+        extends AppCompatActivity
+        implements IListItemClickListener,
+        LoaderManager.LoaderCallbacks<Object> {
+
+    private static final String MOVIE_ID_NAME = "com.udacity.and.popularmovies.MovieId";
+    private final String TAG = DetailsActivity.class.getSimpleName();
+    private final int FAVORITES_LOADER = 51;
+    private final int DETAIL_LOADER = 54;
+    private final int TRAILER_LOADER = 55;
+    private final int REVIEW_LOADER = 56;
     @BindView(R.id.rv_reviews)
     RecyclerView mReviews;
     @BindView(R.id.rv_trailers)
@@ -89,34 +94,34 @@ public class DetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        movieId = getIntent().getIntExtra(MOVIE_ID_TAG, 0);
+        movieId = getIntent().getIntExtra(MOVIE_ID_NAME, 0);
         getSupportLoaderManager().initLoader(FAVORITES_LOADER, null, this);
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean isFavorite = (boolean) view.getTag();
                 if (isFavorite) {
-                    getContentResolver().delete(FavoritesContract.FavoritesEntry.CONTENT_URI,
-                            FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?",
+                    getContentResolver().delete(DataContract.DataEntry.CONTENT_URI,
+                            DataContract.DataEntry.COLUMN_MOVIE_ID + "=?",
                             new String[]{String.valueOf(movieId)});
                 } else {
                     ContentValues cv = new ContentValues();
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movieId);
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_TITLE,
+                    cv.put(DataContract.DataEntry.COLUMN_MOVIE_ID, movieId);
+                    cv.put(DataContract.DataEntry.COLUMN_TITLE,
                             mMovieDetails.get(JsonUtils.JSON_VAR_TITLE));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_POSTER_PATH,
+                    cv.put(DataContract.DataEntry.COLUMN_POSTER_PATH,
                             mMovieDetails.get(JsonUtils.JSON_VAR_POSTER));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_SYNOPSIS,
+                    cv.put(DataContract.DataEntry.COLUMN_SYNOPSIS,
                             mMovieDetails.get(JsonUtils.JSON_VAR_OVERVIEW));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_USER_RATING,
+                    cv.put(DataContract.DataEntry.COLUMN_USER_RATING,
                             mMovieDetails.get(JsonUtils.JSON_VAR_VOTE_AVG));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_RELEASE_DATE,
+                    cv.put(DataContract.DataEntry.COLUMN_RELEASE_DATE,
                             mMovieDetails.get(JsonUtils.JSON_VAR_RELEASE));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_BACKDROP_PATH,
+                    cv.put(DataContract.DataEntry.COLUMN_BACKDROP_PATH,
                             mMovieDetails.get(JsonUtils.JSON_VAR_BACKDROP));
-                    cv.put(FavoritesContract.FavoritesEntry.COLUMN_RUNTIME,
+                    cv.put(DataContract.DataEntry.COLUMN_RUNTIME,
                             mMovieDetails.get(JsonUtils.JSON_VAR_RUNTIME));
-                    getContentResolver().insert(FavoritesContract.FavoritesEntry.CONTENT_URI, cv);
+                    getContentResolver().insert(DataContract.DataEntry.CONTENT_URI, cv);
                 }
                 getSupportLoaderManager().restartLoader(FAVORITES_LOADER, null, DetailsActivity.this);
             }
@@ -183,11 +188,11 @@ public class DetailsActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @NonNull
     @Override
     public Loader<Object> onCreateLoader(final int id, Bundle args) {
         return new AsyncTaskLoader<Object>(this) {
-
             @Override
             protected void onStartLoading() {
                 forceLoad();
@@ -199,7 +204,7 @@ public class DetailsActivity extends AppCompatActivity
                 switch (id) {
                     case FAVORITES_LOADER:
                         try {
-                            return getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
+                            return getContentResolver().query(DataContract.DataEntry.CONTENT_URI,
                                     null,
                                     null,
                                     null,
@@ -215,11 +220,11 @@ public class DetailsActivity extends AppCompatActivity
                             return getResponseFromServer(url);
                         } else {
                             try {
-                                return getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
+                                return getContentResolver().query(DataContract.DataEntry.CONTENT_URI,
                                         null,
-                                        FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?",
+                                        DataContract.DataEntry.COLUMN_MOVIE_ID + "=?",
                                         new String[]{String.valueOf(movieId)},
-                                        FavoritesContract.FavoritesEntry.COLUMN_TIMESTAMP);
+                                        DataContract.DataEntry.COLUMN_TIMESTAMP);
                             } catch (Exception e) {
                                 Log.e(TAG, "Failed to asynchronously load data.");
                                 e.printStackTrace();
@@ -263,7 +268,7 @@ public class DetailsActivity extends AppCompatActivity
                     boolean isFavorite = false;
                     while (cursor.moveToNext() && !isFavorite) {
                         int id = cursor.getInt(cursor.getColumnIndex(
-                                FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID));
+                                DataContract.DataEntry.COLUMN_MOVIE_ID));
                         isFavorite = id == movieId;
                     }
                     cursor.close();

@@ -14,13 +14,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
 
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
         PreferenceScreen prefScreen = getPreferenceScreen();
         int count = prefScreen.getPreferenceCount();
 
         for (int i = 0; i < count; i++) {
             Preference pref = prefScreen.getPreference(i);
-            String value = sharedPreferences.getString(pref.getKey(), "");
+            String value = prefs.getString(pref.getKey(), "");
             setPreferenceSummary(pref, value);
         }
     }

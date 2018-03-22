@@ -13,6 +13,9 @@ import com.udacity.and.popularmovies.IListItemClickListener;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.data.MovieDetails;
 
+/**
+ * Adapter for trailer video list in DetailsActivity
+ */
 public class TrailersAdapter
         extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapterViewHolder> {
     private final IListItemClickListener mOnClickListener;
@@ -44,7 +47,7 @@ public class TrailersAdapter
         private final TextView mTrailerLabel;
         private final ImageView mTrailerIcon;
 
-        public TrailersAdapterViewHolder(View itemView) {
+        TrailersAdapterViewHolder(View itemView) {
             super(itemView);
             mTrailerLabel = itemView.findViewById(R.id.tv_trailer_label);
             mTrailerIcon = itemView.findViewById(R.id.iv_video_icon);

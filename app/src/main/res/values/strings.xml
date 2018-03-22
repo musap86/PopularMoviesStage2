@@ -18,6 +18,7 @@
     <string name="mark_favorite">MARK AS FAVORITE</string>
     <string name="remove_favorite">REMOVE FROM FAVORITES</string>
     <string name="full_vote_point">/10</string>
+    <string name="pages_shown">Pages shown</string>
 
     <string name="pref_quality_label">Image Quality</string>
     <string name="pref_quality_label_1">Very low</string>

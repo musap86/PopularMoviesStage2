@@ -3,12 +3,12 @@ package com.udacity.and.popularmovies.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class FavoritesContract {
+public class DataContract {
     static final String AUTHORITY = "com.udacity.and.popularmovies";
     static final String PATH_FAVORITES = "favorites";
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-    public static final class FavoritesEntry implements BaseColumns {
+    public static final class DataEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITES).build();
         public static final String COLUMN_MOVIE_ID = "movieId";

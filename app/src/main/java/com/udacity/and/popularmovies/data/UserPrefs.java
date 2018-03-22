@@ -6,9 +6,8 @@ import android.util.DisplayMetrics;
 import com.udacity.and.popularmovies.utilities.NetworkUtils;
 
 /**
- * Data class for the user preferences to view movie posters.
- * Posters of most popular, top rated or favorite movies are shown
- * in preferred image quality.
+ * Cache for user preferences to view movie posters. Posters of most popular, top rated or
+ * favorite movies are shown in preferred image quality.
  */
 public class UserPrefs {
     private static NetworkUtils.SortOrder sSortingOrder;
@@ -18,11 +17,26 @@ public class UserPrefs {
      * Returns the opted type of sorting order for the poster images of related movies
      * in the main activity.
      */
-    public static NetworkUtils.SortOrder getSortOrder() {
+    public static NetworkUtils.SortOrder getSortOrder(Context context) {
         if (sSortingOrder == null) {
-            sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
+            if (NetworkUtils.isOnline(context)) {
+                sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
+            } else {
+                sSortingOrder = NetworkUtils.SortOrder.FAVORITES;
+            }
         }
         return sSortingOrder;
+    }
+
+    public static int getSortOrderIndex(Context context) {
+        if (sSortingOrder == null) {
+            if (NetworkUtils.isOnline(context)) {
+                sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
+            } else {
+                sSortingOrder = NetworkUtils.SortOrder.FAVORITES;
+            }
+        }
+        return sSortingOrder.ordinal();
     }
 
     /**
@@ -31,20 +45,6 @@ public class UserPrefs {
      */
     public static void setSortOrder(NetworkUtils.SortOrder sortingOrder) {
         sSortingOrder = sortingOrder;
-    }
-
-    public static int setSortOrder(Context context) {
-        if (sSortingOrder == null) {
-            if (NetworkUtils.isOnline(context)) {
-                sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
-                return 0;
-            } else {
-                sSortingOrder = NetworkUtils.SortOrder.FAVORITES;
-                return 2;
-            }
-        } else {
-            return sSortingOrder.ordinal();
-        }
     }
 
     /**

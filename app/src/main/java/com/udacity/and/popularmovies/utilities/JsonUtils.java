@@ -37,16 +37,18 @@ public class JsonUtils {
         try {
             JSONObject jsonObject = new JSONObject(json);
             MovieDetails.setPageCount(jsonObject.optInt(JSON_VAR_PAGES));
-            MovieDetails.setCurrentPage(jsonObject.optInt(JSON_VAR_PAGE));
             JSONArray results = jsonObject.getJSONArray(JSON_VAR_RESULTS);
             int[] ids = new int[results.length()];
+            int[] pages = new int[results.length()];
             String[] posterPaths = new String[results.length()];
             for (int i = 0; i < results.length(); i++) {
                 JSONObject result = results.optJSONObject(i);
                 ids[i] = result.optInt(JSON_VAR_ID);
+                pages[i] = jsonObject.optInt(JSON_VAR_PAGE);
                 posterPaths[i] = result.optString(JSON_VAR_POSTER);
             }
             MovieDetails.setIds(ids);
+            MovieDetails.setPages(pages);
             MovieDetails.setPosterPaths(posterPaths);
         } catch (JSONException e) {
             Log.e(CLASS_TAG, e.getMessage());

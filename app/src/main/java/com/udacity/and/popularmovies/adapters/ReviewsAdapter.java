@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.data.MovieDetails;
 
+/**
+ * Adapter for review list in DetailsActivity
+ */
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsAdapterViewHolder> {
     @NonNull
     @Override
@@ -33,7 +36,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsA
         private final TextView mAuthor;
         private final TextView mContent;
 
-        public ReviewsAdapterViewHolder(View itemView) {
+        ReviewsAdapterViewHolder(View itemView) {
             super(itemView);
             mAuthor = itemView.findViewById(R.id.tv_review_author);
             mContent = itemView.findViewById(R.id.tv_review_content);
