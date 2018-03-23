@@ -41,15 +41,18 @@ public class JsonUtils {
             int[] ids = new int[results.length()];
             int[] pages = new int[results.length()];
             String[] posterPaths = new String[results.length()];
+            String[] movieTitles = new String[results.length()];
             for (int i = 0; i < results.length(); i++) {
                 JSONObject result = results.optJSONObject(i);
                 ids[i] = result.optInt(JSON_VAR_ID);
                 pages[i] = jsonObject.optInt(JSON_VAR_PAGE);
                 posterPaths[i] = result.optString(JSON_VAR_POSTER);
+                movieTitles[i] = result.optString(JSON_VAR_TITLE);
             }
             MovieDetails.setIds(ids);
             MovieDetails.setPages(pages);
             MovieDetails.setPosterPaths(posterPaths);
+            MovieDetails.setMovieTitles(movieTitles);
         } catch (JSONException e) {
             Log.e(CLASS_TAG, e.getMessage());
         }

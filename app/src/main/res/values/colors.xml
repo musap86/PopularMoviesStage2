@@ -8,6 +8,7 @@
     <color name="colorTexts">#ffffff</color>
     <color name="colorSeparator">#7381d1</color>
     <color name="colorBackdropTint">#7301404e</color>
+    <color name="colorPosterTitleBackground">#c8000000</color>
     <color name="colorButtonMarkFavorite">#00c8ff</color>
     <color name="colorButtonRemoveFavorite">#98aaaf</color>
 </resources>

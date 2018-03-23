@@ -14,14 +14,11 @@ public class MovieDetails {
     private static int[] sIds;
     private static int[] sPages;
     private static String[] sPosterPaths;
+    private static String[] sMovieTitles;
     private static String[] sVideoNames;
     private static String[] sVideoKeys;
     private static String[][] sReviewsArray;
     private static int sPageCount;
-
-    public static void clearMoviesInPage() {
-        sIds = new int[]{0};
-    }
 
     public static void setIds(int[] ids) {
         sIds = ids;
@@ -55,6 +52,14 @@ public class MovieDetails {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static String getMovieTitle(int index) {
+        return sMovieTitles[index];
+    }
+
+    public static void setMovieTitles(String[] movieTitles) {
+        sMovieTitles = movieTitles;
     }
 
     public static void setVideoNames(String[] videoNames) {

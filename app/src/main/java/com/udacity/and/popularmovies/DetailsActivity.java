@@ -296,12 +296,18 @@ public class DetailsActivity
                             getResources().getString(R.string.full_vote_point);
                     mTextViewAvgVote.setText(averageVote);
                     mTextViewPlot.setText(mMovieDetails.get(JsonUtils.JSON_VAR_OVERVIEW));
-                    String s = mMovieDetails.get(JsonUtils.JSON_VAR_RUNTIME);
-                    if (s.equals("null"))
+                    String runtime = mMovieDetails.get(JsonUtils.JSON_VAR_RUNTIME);
+                    if (runtime.equals("null"))
                         mTextViewMovieRuntimeSuffix.setVisibility(View.GONE);
                     else {
                         mTextViewMovieRuntimeSuffix.setVisibility(View.VISIBLE);
-                        mTextViewMovieLength.setText(s);
+                        mTextViewMovieLength.setText(runtime);
+                    }
+                    float rating = Float.parseFloat(mMovieDetails.get(JsonUtils.JSON_VAR_VOTE_AVG));
+                    if (rating == 0) {
+                        mTextViewAvgVote.setVisibility(View.GONE);
+                    } else {
+                        mTextViewMovieRuntimeSuffix.setVisibility(View.VISIBLE);
                     }
                     final String backDropPath = NetworkUtils.generateURL(
                             mMovieDetails.get(JsonUtils.JSON_VAR_BACKDROP), UserPrefs.getImageQuality(), true);
@@ -322,10 +328,10 @@ public class DetailsActivity
                                             .into(mHeaderImage);
                                 }
                             });
-                    final String posterImagePath = NetworkUtils.generateURL(
+                    final String POSTER_IMAGE_PATH = NetworkUtils.generateURL(
                             mMovieDetails.get(JsonUtils.JSON_VAR_POSTER), UserPrefs.getImageQuality(), false);
                     Picasso.with(this)
-                            .load(posterImagePath)
+                            .load(POSTER_IMAGE_PATH)
                             .networkPolicy(NetworkPolicy.OFFLINE)
                             .into(mPoster, new Callback() {
                                 @Override
@@ -335,7 +341,7 @@ public class DetailsActivity
                                 @Override
                                 public void onError() {
                                     Picasso.with(DetailsActivity.this)
-                                            .load(posterImagePath)
+                                            .load(POSTER_IMAGE_PATH)
                                             .placeholder(R.mipmap.poster_placeholder)
                                             .error(R.mipmap.no_poster_image)
                                             .into(mPoster);

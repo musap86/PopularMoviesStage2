@@ -20,7 +20,7 @@ import java.util.Scanner;
  */
 public class NetworkUtils {
     public static final String BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v=";
-    private static final String CLASS_TAG = NetworkUtils.class.getSimpleName();
+    private static final String TAG = NetworkUtils.class.getSimpleName();
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
     private static final String BASE_MOVIE_URL = "http://api.themoviedb.org/3/movie";
     private static final String PATH_POPULAR = "popular";
@@ -60,7 +60,7 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(CLASS_TAG, "#1 Query URL " + url);
+        Log.v(TAG, "#1 Query URL " + url);
         return url;
     }
 
@@ -112,7 +112,7 @@ public class NetworkUtils {
         StringBuilder stringBuilder = new StringBuilder(BASE_IMAGE_URL)
                 .append(imageQuality)
                 .append(imagePath);
-        Log.v(CLASS_TAG, "Image URL " + stringBuilder.toString());
+        Log.v(TAG, "Image URL " + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -127,7 +127,7 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(CLASS_TAG, "#2 Query URL " + url);
+        Log.v(TAG, "#2 Query URL " + url);
         return url;
     }
 
@@ -152,7 +152,7 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(CLASS_TAG, "#3 Query URL " + url);
+        Log.v(TAG, "#3 Query URL " + url);
         return url;
     }
 
@@ -166,6 +166,7 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
+            Log.v(TAG, "Connecting to URL, getting input stream...");
             InputStream in = urlConnection.getInputStream();
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
@@ -177,6 +178,7 @@ public class NetworkUtils {
             }
         } finally {
             urlConnection.disconnect();
+            Log.v(TAG, "Disconnected from URL stream.");
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.and.popularmovies.IListItemClickListener;
@@ -87,6 +88,7 @@ public class PostersAdapter extends RecyclerView.Adapter<PostersAdapter.MoviePos
             implements OnClickListener {
 
         private final ImageView mMoviePosterImageView;
+        private final TextView mMoviePosterTextView;
 
         /**
          * Initiates an image view from movie poster item layout file
@@ -96,6 +98,7 @@ public class PostersAdapter extends RecyclerView.Adapter<PostersAdapter.MoviePos
         private MoviePostersViewHolder(View itemView) {
             super(itemView);
             mMoviePosterImageView = itemView.findViewById(R.id.iv_movie_poster);
+            mMoviePosterTextView = itemView.findViewById(R.id.tv_movie_poster);
             itemView.setOnClickListener(this);
         }
 
@@ -107,9 +110,10 @@ public class PostersAdapter extends RecyclerView.Adapter<PostersAdapter.MoviePos
          */
         void bind(int pos) {
             String imageUrlString = null;
+            // If this item is either a most popular or a top rated movie, mCursor is null.
             if (mCursor == null) {
-                //item is either a most popular or a top rated movie
                 itemView.setTag(MovieDetails.getId(pos));
+                mMoviePosterTextView.setText(MovieDetails.getMovieTitle(pos));
                 /* For a few of the movies, the server returns a json response in which there is
                 a "null" statement instead of a path for an image file.*/
                 if (MovieDetails.getImagePath(pos).equals("null")) {
@@ -118,12 +122,15 @@ public class PostersAdapter extends RecyclerView.Adapter<PostersAdapter.MoviePos
                     imageUrlString = NetworkUtils
                             .generateURL(MovieDetails.getImagePath(pos), UserPrefs.getImageQuality(), false);
                 }
-            } else {
-                //item is a favorite movie
+            }
+            // The item is a favorite movie.
+            else {
                 if (mCursor.moveToPosition(pos)) {
                     int id = mCursor.getInt(mCursor.getColumnIndex(
                             DataContract.DataEntry.COLUMN_MOVIE_ID));
                     itemView.setTag(id);
+                    mMoviePosterTextView.setText(mCursor.getString(mCursor.getColumnIndex(
+                            DataContract.DataEntry.COLUMN_TITLE)));
                     String posterPath = mCursor.getString(mCursor.getColumnIndex(
                             DataContract.DataEntry.COLUMN_POSTER_PATH));
                     imageUrlString = NetworkUtils
