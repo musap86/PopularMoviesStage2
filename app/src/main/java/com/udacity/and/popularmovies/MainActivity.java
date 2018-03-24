@@ -47,7 +47,6 @@ public class MainActivity
         LoaderManager.LoaderCallbacks<Object>,
         SharedPreferences.OnSharedPreferenceChangeListener,
         AdapterView.OnItemSelectedListener {
-
     private final String TAG = MainActivity.class.getSimpleName();
     private final String POSTERS_STATE = "poster_list_state";
     private final String FIRST_VISIBLE_ITEM_MP = "most_popular_first_visible_item";
