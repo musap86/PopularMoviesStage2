@@ -2,8 +2,6 @@ package com.udacity.and.popularmovies.utilities;
 
 import android.util.Log;
 
-import com.udacity.and.popularmovies.data.MovieDetails;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

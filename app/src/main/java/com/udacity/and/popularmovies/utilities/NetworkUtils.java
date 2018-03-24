@@ -29,17 +29,19 @@ public class NetworkUtils {
     private static final String REVIEWS_TAG = "reviews";
     private static final String QUERY_API_KEY = "api_key";
     private static final String QUERY_PAGE = "page";
-    private static final int START_PAGE = 1;
     public static String PARAM_API_KEY;
 
     /**
-     * Builds the URL used to talk to the movieDB server using a sorting type.
+     * Builds the URL used to talk to the movie database server using a sorting type.
      *
      * @param sortingType The type of sorting that will be queried for.
      * @return The URL to query from the movieDB server.
      */
-    public static URL generateURL(SortOrder sortingType, int page) {
+    public static URL generateURL(order sortingType, int page) {
+        if (sortingType == null)
+            sortingType = order.MOST_POPULAR;
         String path = "";
+        int START_PAGE = 1;
         page = (page < START_PAGE) ? START_PAGE : page;
         switch (sortingType) {
             case MOST_POPULAR:
@@ -131,9 +133,9 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL generateURL(long id, Endpoint endpoint) {
+    public static URL generateURL(long id, Endpoint Endpoint) {
         String path = "";
-        switch (endpoint) {
+        switch (Endpoint) {
             case VIDEO:
                 path = TRAILERS_TAG;
                 break;
@@ -195,7 +197,7 @@ public class NetworkUtils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public enum SortOrder {MOST_POPULAR, TOP_RATED, FAVORITES}
+    public enum order {MOST_POPULAR, TOP_RATED, FAVORITES}
 
     public enum Endpoint {VIDEO, REVIEW}
 }

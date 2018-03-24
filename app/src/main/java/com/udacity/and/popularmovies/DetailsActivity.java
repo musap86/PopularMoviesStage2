@@ -29,11 +29,12 @@ import com.squareup.picasso.Picasso;
 import com.udacity.and.popularmovies.adapters.ReviewsAdapter;
 import com.udacity.and.popularmovies.adapters.TrailersAdapter;
 import com.udacity.and.popularmovies.data.DataContract;
-import com.udacity.and.popularmovies.data.MovieDetails;
-import com.udacity.and.popularmovies.data.UserPrefs;
 import com.udacity.and.popularmovies.utilities.DateUtils;
+import com.udacity.and.popularmovies.utilities.IListItemClickListener;
 import com.udacity.and.popularmovies.utilities.JsonUtils;
+import com.udacity.and.popularmovies.utilities.MovieDetails;
 import com.udacity.and.popularmovies.utilities.NetworkUtils;
+import com.udacity.and.popularmovies.utilities.UserPrefs;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,7 +49,6 @@ public class DetailsActivity
         implements IListItemClickListener,
         LoaderManager.LoaderCallbacks<Object> {
 
-    private static final String MOVIE_ID_NAME = "com.udacity.and.popularmovies.MovieId";
     private final String TAG = DetailsActivity.class.getSimpleName();
     private final int FAVORITES_LOADER = 51;
     private final int DETAIL_LOADER = 54;
@@ -84,48 +84,50 @@ public class DetailsActivity
     ImageView mPoster;
     @BindView(R.id.mark_as_favorite_button)
     Button mFavoriteButton;
+    private Map<String, String> mMovieDetails;
     private ReviewsAdapter mReviewsAdapter;
     private TrailersAdapter mTrailersAdapter;
     private int movieId;
-    private Map<String, String> mMovieDetails;
+    private final View.OnClickListener mFavoriteButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            boolean isFavorite = (boolean) view.getTag();
+            if (isFavorite) {
+                getContentResolver().delete(DataContract.DataEntry.CONTENT_URI,
+                        DataContract.DataEntry.COLUMN_MOVIE_ID + "=?",
+                        new String[]{String.valueOf(movieId)});
+            } else {
+                ContentValues cv = new ContentValues();
+                cv.put(DataContract.DataEntry.COLUMN_MOVIE_ID, movieId);
+                cv.put(DataContract.DataEntry.COLUMN_TITLE,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_TITLE));
+                cv.put(DataContract.DataEntry.COLUMN_POSTER_PATH,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_POSTER));
+                cv.put(DataContract.DataEntry.COLUMN_SYNOPSIS,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_OVERVIEW));
+                cv.put(DataContract.DataEntry.COLUMN_USER_RATING,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_VOTE_AVG));
+                cv.put(DataContract.DataEntry.COLUMN_RELEASE_DATE,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_RELEASE));
+                cv.put(DataContract.DataEntry.COLUMN_BACKDROP_PATH,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_BACKDROP));
+                cv.put(DataContract.DataEntry.COLUMN_RUNTIME,
+                        mMovieDetails.get(JsonUtils.JSON_VAR_RUNTIME));
+                getContentResolver().insert(DataContract.DataEntry.CONTENT_URI, cv);
+            }
+            getSupportLoaderManager().restartLoader(FAVORITES_LOADER, null, DetailsActivity.this);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        String MOVIE_ID_NAME = "com.udacity.and.popularmovies.MovieId";
         movieId = getIntent().getIntExtra(MOVIE_ID_NAME, 0);
         getSupportLoaderManager().initLoader(FAVORITES_LOADER, null, this);
-        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isFavorite = (boolean) view.getTag();
-                if (isFavorite) {
-                    getContentResolver().delete(DataContract.DataEntry.CONTENT_URI,
-                            DataContract.DataEntry.COLUMN_MOVIE_ID + "=?",
-                            new String[]{String.valueOf(movieId)});
-                } else {
-                    ContentValues cv = new ContentValues();
-                    cv.put(DataContract.DataEntry.COLUMN_MOVIE_ID, movieId);
-                    cv.put(DataContract.DataEntry.COLUMN_TITLE,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_TITLE));
-                    cv.put(DataContract.DataEntry.COLUMN_POSTER_PATH,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_POSTER));
-                    cv.put(DataContract.DataEntry.COLUMN_SYNOPSIS,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_OVERVIEW));
-                    cv.put(DataContract.DataEntry.COLUMN_USER_RATING,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_VOTE_AVG));
-                    cv.put(DataContract.DataEntry.COLUMN_RELEASE_DATE,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_RELEASE));
-                    cv.put(DataContract.DataEntry.COLUMN_BACKDROP_PATH,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_BACKDROP));
-                    cv.put(DataContract.DataEntry.COLUMN_RUNTIME,
-                            mMovieDetails.get(JsonUtils.JSON_VAR_RUNTIME));
-                    getContentResolver().insert(DataContract.DataEntry.CONTENT_URI, cv);
-                }
-                getSupportLoaderManager().restartLoader(FAVORITES_LOADER, null, DetailsActivity.this);
-            }
-        });
+        mFavoriteButton.setOnClickListener(mFavoriteButtonListener);
         LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this);
         mTrailers.setLayoutManager(trailersLayoutManager);
         mTrailers.setHasFixedSize(true);

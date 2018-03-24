@@ -1,4 +1,4 @@
-package com.udacity.and.popularmovies;
+package com.udacity.and.popularmovies.utilities;
 
 import android.view.View;
 

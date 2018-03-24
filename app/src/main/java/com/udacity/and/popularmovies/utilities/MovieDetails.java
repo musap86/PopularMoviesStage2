@@ -1,8 +1,8 @@
-package com.udacity.and.popularmovies.data;
+package com.udacity.and.popularmovies.utilities;
 
 import android.database.Cursor;
 
-import com.udacity.and.popularmovies.utilities.JsonUtils;
+import com.udacity.and.popularmovies.data.DataContract;
 
 import java.util.HashMap;
 import java.util.Map;

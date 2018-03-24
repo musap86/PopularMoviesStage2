@@ -1,28 +1,26 @@
-package com.udacity.and.popularmovies.data;
+package com.udacity.and.popularmovies.utilities;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
-
-import com.udacity.and.popularmovies.utilities.NetworkUtils;
 
 /**
  * Cache for user preferences to view movie posters. Posters of most popular, top rated or
  * favorite movies are shown in preferred image quality.
  */
 public class UserPrefs {
-    private static NetworkUtils.SortOrder sSortingOrder;
+    private static NetworkUtils.order sSortingOrder;
     private static int sImageQuality;
 
     /**
      * Returns the opted type of sorting order for the poster images of related movies
      * in the main activity.
      */
-    public static NetworkUtils.SortOrder getSortOrder(Context context) {
+    public static NetworkUtils.order getSortOrder(Context context) {
         if (sSortingOrder == null) {
             if (NetworkUtils.isOnline(context)) {
-                sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
+                sSortingOrder = NetworkUtils.order.MOST_POPULAR;
             } else {
-                sSortingOrder = NetworkUtils.SortOrder.FAVORITES;
+                sSortingOrder = NetworkUtils.order.FAVORITES;
             }
         }
         return sSortingOrder;
@@ -31,9 +29,9 @@ public class UserPrefs {
     public static int getSortOrderIndex(Context context) {
         if (sSortingOrder == null) {
             if (NetworkUtils.isOnline(context)) {
-                sSortingOrder = NetworkUtils.SortOrder.MOST_POPULAR;
+                sSortingOrder = NetworkUtils.order.MOST_POPULAR;
             } else {
-                sSortingOrder = NetworkUtils.SortOrder.FAVORITES;
+                sSortingOrder = NetworkUtils.order.FAVORITES;
             }
         }
         return sSortingOrder.ordinal();
@@ -43,7 +41,7 @@ public class UserPrefs {
      * Changes the opted type of sorting order for the poster images of related movies
      * in the main activity.
      */
-    public static void setSortOrder(NetworkUtils.SortOrder sortingOrder) {
+    public static void setSortOrder(NetworkUtils.order sortingOrder) {
         sSortingOrder = sortingOrder;
     }
 
@@ -62,8 +60,8 @@ public class UserPrefs {
     }
 
     /**
-     * Returns the count for grid columns to show movie posters. In order to achieve
-     * a nice user xp, column count is calculated in accordance with the screen
+     * Returns the count for grid columns to show movie posters.
+     * Column count is calculated in accordance with the screen
      * width in pixels and image quality of each movie poster.
      */
     public static int getGridColumnCount(DisplayMetrics metrics) {

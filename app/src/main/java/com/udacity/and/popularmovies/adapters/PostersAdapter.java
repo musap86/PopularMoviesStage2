@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.udacity.and.popularmovies.IListItemClickListener;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.data.DataContract;
-import com.udacity.and.popularmovies.data.MovieDetails;
-import com.udacity.and.popularmovies.data.UserPrefs;
+import com.udacity.and.popularmovies.utilities.IListItemClickListener;
+import com.udacity.and.popularmovies.utilities.MovieDetails;
 import com.udacity.and.popularmovies.utilities.NetworkUtils;
+import com.udacity.and.popularmovies.utilities.UserPrefs;
 
 /**
  * Adapter for movie poster list in MainActivity

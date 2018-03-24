@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.udacity.and.popularmovies.IListItemClickListener;
 import com.udacity.and.popularmovies.R;
-import com.udacity.and.popularmovies.data.MovieDetails;
+import com.udacity.and.popularmovies.utilities.IListItemClickListener;
+import com.udacity.and.popularmovies.utilities.MovieDetails;
 
 /**
  * Adapter for trailer video list in DetailsActivity

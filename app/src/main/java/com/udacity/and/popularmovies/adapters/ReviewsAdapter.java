@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.and.popularmovies.R;
-import com.udacity.and.popularmovies.data.MovieDetails;
+import com.udacity.and.popularmovies.utilities.MovieDetails;
 
 /**
  * Adapter for review list in DetailsActivity

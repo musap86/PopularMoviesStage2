@@ -39,7 +39,7 @@ public class FavoritesContentProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         final SQLiteDatabase db = mFavoritesDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-        Uri returnUri = null;
+        Uri returnUri;
         switch (match) {
             case FAVORITES:
                 long id = db.insert(DataContract.DataEntry.TABLE_NAME, null, values);
@@ -48,8 +48,6 @@ public class FavoritesContentProvider extends ContentProvider {
                 } else {
                     throw new SQLException("Failed to insert row into " + uri);
                 }
-                break;
-            case FAVORITES_WITH_ID:
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
