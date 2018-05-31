@@ -1,9 +1,7 @@
-# Popular Movies, Stage 2
-
 Built an app, optimized for tablets, to help users discover popular and highly rated movies on the web. It displays a scrolling grid of movie trailers, launches a details screen whenever a particular movie is selected, allows users to save favorites, play trailers, and read user reviews. This app utilizes core Android user interface components and fetches movie information using themoviedb.org web API.
 
-* Part of the Android Developer Nanodegree Program
-* Works with The Movie Database API
+_Part of the Android Developer Nanodegree Program_
+_Works with The Movie Database API_
 
 **IMPORTANT:** Reviewers should insert their API key.
 
